@@ -1,9 +1,9 @@
 python-dotenv
 openai
 discord-webhook
-robinhood-crypto
+robin-stocks
 pandas
 requests
-ta-lib
+# ta-lib requires system libs, optionally install if available
 matplotlib
 typer
