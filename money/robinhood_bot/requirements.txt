@@ -1,0 +1,9 @@
+python-dotenv
+openai
+discord-webhook
+robinhood-crypto
+pandas
+requests
+ta-lib
+matplotlib
+typer
