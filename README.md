@@ -8,8 +8,9 @@ This repository contains a collection of simple trading bots and a launcher scri
 - **solana_staking_bot** – stakes ETH via Lido. Credentials are loaded from environment variables.
 
 ## Setup
-1. Install Python and `pip`. If `pip` is missing, the `run` script will
-   attempt to bootstrap it automatically.
+1. Install Python. The project requires `pip` to install dependencies.
+   The `run` script will try to bootstrap `pip` using `ensurepip`, but if that
+   fails you may need to install `pip` manually.
 2. Either install dependencies yourself or use the provided `run` launcher.
    - Manual install:
      ```bash

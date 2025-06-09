@@ -5,16 +5,25 @@ import sys
 from pathlib import Path
 
 # Ensure pip is available
-try:
-    import pip  # noqa: F401
-except ImportError:
+def ensure_pip() -> None:
+    """Make sure the running Python has pip available."""
     try:
-        import ensurepip
+        import pip  # noqa: F401
+        return
+    except ImportError:
+        pass
+
+    try:
+        # Some Python distributions ship without pip. Attempt to bootstrap it
+        # using the ensurepip module.
         print("Bootstrapping pip...")
-        ensurepip.bootstrap()
+        subprocess.check_call([sys.executable, "-m", "ensurepip", "--upgrade"])
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
     except Exception as e:
         print(f"Failed to bootstrap pip: {e}")
         sys.exit(1)
+
+ensure_pip()
 
 BASE = Path(__file__).resolve().parent
 
