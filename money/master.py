@@ -1,17 +1,24 @@
 import subprocess
-import os
+import sys
+from pathlib import Path
 
-base = r"C:\Users\willi\Desktop\viben coden\money"
-
-bots = [
-    ["python", os.path.join(base, "robinhood_bot", "main.py")],
-    ["python", os.path.join(base, "alpaca_bot", "main.py")],
-    # remove when headace gone ["python", os.path.join(base, "solana_staking_bot", "main.py")]
-]
-
-for bot in bots:
-    print(f"✅ Launching: {' '.join(bot)}")
+def launch_bot(main_path: Path) -> None:
+    """Launch a bot's main.py in a new process."""
+    print(f"\u2705 Launching: {main_path}")
     try:
-        subprocess.Popen(bot)
+        subprocess.Popen([sys.executable, str(main_path)])
     except Exception as e:
-        print(f"❌ Failed to launch: {' '.join(bot)} | {e}")
+        print(f"\u274C Failed to launch: {main_path} | {e}")
+
+def main() -> None:
+    base = Path(__file__).resolve().parent
+    bots = [
+        base / "robinhood_bot" / "main.py",
+        base / "alpaca_bot" / "main.py",
+    ]
+
+    for bot_path in bots:
+        launch_bot(bot_path)
+
+if __name__ == "__main__":
+    main()

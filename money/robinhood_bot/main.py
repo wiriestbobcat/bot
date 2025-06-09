@@ -281,3 +281,4 @@ if __name__ == "__main__":
             if not statuses:
                 logging.info("No valid statuses to report.")
                 continue
+

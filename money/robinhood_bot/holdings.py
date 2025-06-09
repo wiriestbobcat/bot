@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import robin_stocks.robinhood as r
 from dotenv import load_dotenv
 from discord_webhook import DiscordWebhook
-import holdings  # <-- Include holdings.py
 
 load_dotenv()
 
