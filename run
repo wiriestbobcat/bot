@@ -31,6 +31,7 @@ ALPACA_REQS = BASE / "money" / "alpaca_bot" / "requirements.txt"
 ROBINHOOD_REQS = BASE / "money" / "robinhood_bot" / "requirements.txt"
 MASTER = BASE / "money" / "master.py"
 
+
 def main() -> None:
     commands = [
         [sys.executable, "-m", "pip", "install", "-r", str(ALPACA_REQS)],
@@ -49,3 +50,17 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+commands = [
+    [sys.executable, "-m", "pip", "install", "-r", str(ALPACA_REQS)],
+    [sys.executable, "-m", "pip", "install", "-r", str(ROBINHOOD_REQS)],
+    [sys.executable, str(MASTER)],
+]
+
+for cmd in commands:
+    try:
+        subprocess.check_call(cmd)
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed: {' '.join(cmd)}\n{e}")
+        sys.exit(e.returncode)
+ main
+

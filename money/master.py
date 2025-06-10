@@ -13,6 +13,8 @@ def install_requirements(bot_dir: Path) -> None:
             print(f"Failed to install dependencies: {e}")
             sys.exit(e.returncode)
 
+=======
+
 def launch_bot(main_path: Path) -> None:
     """Launch a bot's main.py in a new process."""
     print(f"\u2705 Launching: {main_path}")
@@ -29,7 +31,10 @@ def main() -> None:
     ]
 
     for bot_path in bots:
+
         install_requirements(bot_path.parent)
+=======
+
         launch_bot(bot_path)
 
 if __name__ == "__main__":
