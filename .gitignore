@@ -1,6 +1,9 @@
 __pycache__/
 *.pyc
 *.log
+
+.env
+=======
  gn711x-codex/retrieve-memory-from-coding-projects
 .env
 =======
