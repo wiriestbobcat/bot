@@ -16,10 +16,14 @@ log_file = "trade_log.csv"
 discord_url = os.getenv("DISCORD_WEBHOOK_URL")
 symbol_list = os.getenv("CRYPTO_SYMBOLS", "BTC").split(",")
 
-# Authenticate with Robinhood
+# Authenticate with Robinhood using environment variables
+username = os.getenv("RH_USERNAME")
+password = os.getenv("RH_PASSWORD")
+if not username or not password:
+    raise RuntimeError("RH_USERNAME and RH_PASSWORD must be set")
 r.login(
-    os.getenv("RH_USERNAME"),
-    os.getenv("RH_PASSWORD"),
+    username,
+    password,
     mfa_code=os.getenv("RH_MFA_CODE", None)
 )
 
