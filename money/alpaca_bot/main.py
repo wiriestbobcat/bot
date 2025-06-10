@@ -11,7 +11,7 @@ import json
 
 def load_config():
     load_dotenv()
-    return {
+    cfg = {
         "ALPACA_API_KEY": os.getenv("ALPACA_API_KEY"),
         "ALPACA_SECRET_KEY": os.getenv("ALPACA_SECRET_KEY"),
         "OPENAI_API_KEY": os.getenv("OPENAI_API_KEY"),
@@ -29,6 +29,9 @@ def load_config():
         "FORCE_BUY_MODE": os.getenv("FORCE_BUY_MODE", "false").lower() == "true",
         "TRADE_BUFFER_SECONDS": float(os.getenv("TRADE_BUFFER_SECONDS", "5"))
     }
+    if not cfg["ALPACA_API_KEY"] or not cfg["ALPACA_SECRET_KEY"]:
+        raise RuntimeError("ALPACA_API_KEY and ALPACA_SECRET_KEY must be set")
+    return cfg
 
 config = load_config()
 openai.api_key = config["OPENAI_API_KEY"]
