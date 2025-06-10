@@ -2,6 +2,23 @@ import subprocess
 import sys
 from pathlib import Path
 
+
+def ensure_pip() -> None:
+    """Ensure pip is available, bootstrapping with ensurepip if needed."""
+    try:
+        import pip  # noqa: F401
+        return
+    except ImportError:
+        pass
+
+    try:
+        print("Bootstrapping pip...")
+        subprocess.check_call([sys.executable, "-m", "ensurepip", "--upgrade"])
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
+    except Exception as e:
+        print(f"Failed to bootstrap pip: {e}")
+        sys.exit(1)
+
 def install_requirements(bot_dir: Path) -> None:
     """Install requirements for a bot if a requirements.txt exists."""
     req_file = bot_dir / "requirements.txt"
@@ -13,6 +30,7 @@ def install_requirements(bot_dir: Path) -> None:
             print(f"Failed to install dependencies: {e}")
             sys.exit(e.returncode)
 
+    ensure_pip()
 =======
 
 def launch_bot(main_path: Path) -> None:
