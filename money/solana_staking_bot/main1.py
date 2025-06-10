@@ -1,3 +1,4 @@
+import os
 import requests
 import time
 import json
@@ -31,9 +32,9 @@ LIDO_ABI = [
 ]
 
 # Set your Ethereum address, private key, and Web3 provider
-YOUR_ETH_ADDRESS = "0xd5ED4B8e20E5075F5272ef386a6286CD55E0BD13"
-PRIVATE_KEY = "ce6b71aa57c97534f363ca1fa899203acece0f4c88fa84fbaa2926d8ac606b13"
-WEB3_PROVIDER_URL = "https://mainnet.infura.io/v3/4205165ab6b5480eb3a801996fb1e52e"
+YOUR_ETH_ADDRESS = os.getenv("ETH_ADDRESS")
+PRIVATE_KEY = os.getenv("PRIVATE_KEY")
+WEB3_PROVIDER_URL = os.getenv("WEB3_PROVIDER_URL")
 
 web3 = Web3(Web3.HTTPProvider(WEB3_PROVIDER_URL))
 if web3.is_connected():
@@ -124,3 +125,4 @@ if __name__ == "__main__":
         staking_bot_loop()
     except Exception as e:
         print(f"❌ Fatal error in staking bot loop: {e}")
+

@@ -60,10 +60,14 @@ def robinhood_auth():
     global robinhood_login
     with login_lock:
         if robinhood_login is None:
+            username = os.getenv("RH_USERNAME")
+            password = os.getenv("RH_PASSWORD")
+            if not username or not password:
+                raise RuntimeError("RH_USERNAME and RH_PASSWORD must be set")
             try:
                 robinhood_login = r.login(
-                    username=os.getenv("RH_USERNAME"),
-                    password=os.getenv("RH_PASSWORD"),
+                    username=username,
+                    password=password,
                     mfa_code=os.getenv("RH_MFA_CODE", None),
                     store_session=True
                 )
@@ -281,3 +285,4 @@ if __name__ == "__main__":
             if not statuses:
                 logging.info("No valid statuses to report.")
                 continue
+

@@ -11,7 +11,7 @@ import json
 
 def load_config():
     load_dotenv()
-    return {
+    cfg = {
         "ALPACA_API_KEY": os.getenv("ALPACA_API_KEY"),
         "ALPACA_SECRET_KEY": os.getenv("ALPACA_SECRET_KEY"),
         "OPENAI_API_KEY": os.getenv("OPENAI_API_KEY"),
@@ -29,6 +29,9 @@ def load_config():
         "FORCE_BUY_MODE": os.getenv("FORCE_BUY_MODE", "false").lower() == "true",
         "TRADE_BUFFER_SECONDS": float(os.getenv("TRADE_BUFFER_SECONDS", "5"))
     }
+    if not cfg["ALPACA_API_KEY"] or not cfg["ALPACA_SECRET_KEY"]:
+        raise RuntimeError("ALPACA_API_KEY and ALPACA_SECRET_KEY must be set")
+    return cfg
 
 config = load_config()
 openai.api_key = config["OPENAI_API_KEY"]
@@ -92,6 +95,27 @@ def combined_strategy(data):
 
     return signal
 
+
+def ask_gpt_action(current_price, symbol):
+    """Use OpenAI to suggest BUY, SELL, or HOLD."""
+    prompt = (
+        f"The current price of {symbol} is {current_price:.2f}. "
+        "Respond with BUY, SELL, or HOLD for a short-term trade."
+    )
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=1,
+            temperature=0,
+        )
+        action = response.choices[0].message["content"].strip().upper()
+        if action in {"BUY", "SELL", "HOLD"}:
+            return action
+    except Exception as e:
+        logging.error(f"OpenAI error: {e}")
+    return "HOLD"
+
 def run_bot():
     global config
     config = load_config()  # Re-load on each loop
@@ -143,3 +167,4 @@ if __name__ == "__main__":
     while True:
         run_bot()
         time.sleep(config["LOOP_INTERVAL_MINUTES"] * 60)
+
